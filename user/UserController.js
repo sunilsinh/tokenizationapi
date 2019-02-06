@@ -52,5 +52,52 @@ router.put('/:id', function (req, res) {
     });
 });
 
+router.post('/userlogin',function(req, res){
+	
+	User.find({
+		email: req.body.email,
+		password: req.body.password
+	}, function(err,data){
+		if(err){
+			res.status(500).json({
+				status: 500,
+				message:`Something went wrong`+err,
+				data : null
+				
+			}).end();
+		} else {
+			res.status(200).json({
+				status: 200,
+				message:"successfully data recieved",
+				data: data
+			}).end();
+		}
+		
+	});
+});
+
+router.post("/registration",(req, res)=>{
+	var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+	User.create({
+		name:req.body.name,
+		email:req.body.email,
+		password: req.body.password
+	}, (err, data)=>{
+		if(err){
+			res.status(500).json({
+				status: 500,
+				message:`Something went wrong ${err}`,
+				data: null
+			}).end();
+		} else {
+			res.status(200).json({
+				status: 200,
+				message:"data successfully added",
+				data: data
+			}).end();
+		}
+	});
+})
+
 
 module.exports = router;
