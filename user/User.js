@@ -1,9 +1,21 @@
-var mongoose = require('mongoose');  
-var UserSchema = new mongoose.Schema({  
-  name: String,
-  email: String,
-  password: String
+/**
+ * User model schema with validation
+ */
+var mongoose = require("mongoose");
+var UserSchema = new mongoose.Schema({
+	name : {
+		type : String,
+		required : [ true, " name is required" ]
+	},
+	email : {
+		type : String,
+		required : [ true, "email is required" ]
+	},
+	password : {
+		type : String,
+		required : [ true, "password is required" ]
+	}
 });
-mongoose.model('User', UserSchema);
 
-module.exports = mongoose.model('User');
+mongoose.model("User",UserSchema);
+module.exports = mongoose.model("User");
