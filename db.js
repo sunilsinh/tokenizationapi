@@ -8,4 +8,3 @@ mongoose.connection.on("connected", function(){
 mongoose.connection.on("error", function(err){
 	console.log("Unable to connect with " +mongodbUrl + "error are"+ err);
 })
-

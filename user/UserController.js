@@ -1,28 +1,26 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
+var cors = require('cors');
 var bcrypt = require("bcryptjs");
-
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
+router.use(cors());
 var User = require('./User');
 var jwt = require("jsonwebtoken");
 var sendResponse = require('../commonComponent/./common').common;
 // for supersecret
 var config = require("../config");
-// require verifyToken
-var VerifyToken = require('../auth/./VerifyToken');
 /**	
  * Add new user data
  */
 router.post("/registration",(req, res)=>{
-	
 	userAvailability(req,res)
 	.then((userData)=>{
 		if(userData==null){
 			var hashedPassword = bcrypt.hashSync(req.body.password, 8);
 			User.create({
-				name:req.body.name,
+				name:req.bouserAvailabilitydy.name,
 				email:req.body.email,
 				password: hashedPassword
 			},(err, data)=>{
@@ -34,7 +32,7 @@ router.post("/registration",(req, res)=>{
 			});
 
 		}else{
-			sendResponse.setResponse(res,404,`User already exist`);
+			sendResponse.setResponse(res,200,`User already exist`);
 		
 		}
 	});
@@ -108,15 +106,6 @@ router.post('/userlogin',function(req, res){
 			   sendResponse.setResponse(res, 200, "Generated token", {token: token});
 		   }
 	   });
-});
-
-router.get('/verifytoken', VerifyToken, function(req, res, next) {
-	
-	User.findById(req.userId, { password: 0 }, function (err, data) {
-	  if (err) return sendResponse.setResponse(res,500,"There was a problem to finding user's data.");
-	  if (!user) return sendResponse.setResponse(res,404,"Opps, no user found");
-	  sendResponse.setResponse(res, 200, "Verified user", data);
-	});
 });
 
 /**
